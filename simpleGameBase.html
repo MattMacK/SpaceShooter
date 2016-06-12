@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>Space Shooter</title>
+    <script type="text/javascript"
+            src = "lib/simpleGame.js"></script>
+    <script type="text/javascript" src="lib/shooterFunctions"></script>
+    <script type="text/javascript">
+        var scene;
+        var ship;
+        var lazer;
+        var NUM_LAZERS = 100;
+        var delay = .3;
+        var currentLazer = 0;
+        var timer;
+        var astroidTimer;
+        var astroids;
+        var astroidDelay = .5;
+        var currentAstroid = 0;
+        var explosion;
+        var currentExplosion = 0;
+
+
+        function init(){
+            scene = new Scene();
+            scene.setBG("black");
+            CreateExplosions();
+            makeLazers();
+            createAstroids();
+            timer = new Timer();
+            astroidTimer = new Timer();
+            ship = new Ship();
+
+            scene.start();
+        } // end init
+
+        function update(){
+            scene.clear();
+            deployAstroids();
+            ship.checkKeys();
+            ship.update();
+            updateLazers();
+            updateAstroids();
+            updateExplosions();
+
+        }
+    </script>
+</head>
+<body onload = "init()">
+
+</body>
+</html>

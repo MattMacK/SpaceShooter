@@ -1,0 +1,189 @@
+
+
+//Ship functions
+
+function Ship() {
+    tShip = new Sprite(scene, "resources/ship_6.png", 90, 90);
+    tShip.setPosition(400, 550);
+    tShip.setSpeed(0);
+    tShip.hSpeed = 0;
+    tShip.vSpeed = 0;
+    tShip.setBoundAction(STOP);
+
+
+    tShip.checkKeys = function() {
+        elapsedTime = timer.getElapsedTime();
+        this.hSpeed = 0;
+        this.vSpeed = 0;
+        if (keysDown[K_LEFT]) {
+            this.hSpeed = -20;
+            this.vSpeed = 0;
+        }
+        if(keysDown[K_RIGHT]) {
+            this.hSpeed = 20;
+            this.vSpeed = 0;
+        }
+        if(keysDown[K_DOWN]) {
+            this.hSpeed = 0;
+            this.vSpeed = 20;
+        }
+        if(keysDown[K_UP]){
+            this.hSpeed = 0;
+            this.vSpeed = -20;
+        }
+        if(keysDown[K_SPACE]) {
+            if(elapsedTime > delay) {
+                currentLazer++;
+                if(currentLazer >= NUM_LAZERS) {
+                    currentLazer = 0;
+                }
+                lazers[currentLazer].fire();
+                timer.reset();
+            }
+        }
+
+        this.changeXby(this.hSpeed);
+        this.changeYby(this.vSpeed);
+        if(this.x < 30){
+            this.setX(30);
+        }
+        if(this.x > 770){
+            this.setX(770);
+        }
+        if(this.y > 570){
+            this.setY(570);
+        }
+        if(this.y < 430){
+            this.setY(430);
+        }
+    };
+    return tShip;
+}
+
+// Lazer functions
+
+function Lazer() {
+    tLazer = new Sprite(scene, "resources/lazer.png", 10, 30);
+    tLazer.setBoundAction(DIE);
+    tLazer.hide();
+
+    tLazer.fire = function(){
+        this.show();
+        this.setPosition(ship.x, ship.y);
+        //this.vSpeed = -30;
+        //this.changeYby(this.vSpeed);
+        this.setMoveAngle(0);
+        this.setSpeed(40);
+    };
+    return tLazer;
+}
+
+function makeLazers() {
+    lazers = new Array(NUM_LAZERS);
+    for(var i = 0; i < NUM_LAZERS; i++){
+        lazers[i] = new Lazer();
+    }
+}
+
+function updateLazers() {
+    for(var i = 0; i < NUM_LAZERS; i++) {
+        lazers[i].update();
+    }
+}
+
+// Astroid functions
+
+function Astroid() {
+    tAstroid = new Sprite(scene, "resources/asteroid_1.png", 100, 100);
+    tAstroid.setBoundAction(DIE);
+    tAstroid.hide();
+
+
+    tAstroid.fire = function () {
+        this.setImage("resources/asteroid_1.png");
+        this.show();
+        this.setPosition((Math.random() * 800), -20);
+        this.setSpeed(25);
+        this.setMoveAngle(180);
+    };
+
+    tAstroid.checkCollision = function () {
+        for (var i = 0; i <= lazers.length - 1; i++) {
+            if (this.collidesWith(lazers[i])) {
+                lazers[i].hide();
+                this.hide();
+                console.log("collision");
+                currentExplosion++;
+                if (currentExplosion >= 300) {
+                    currentExplosion = 0;
+                }
+                explosions[i].setPosition(this.x, this.y);
+                explosions[i].setCurrentCycle("one");
+                explosions[i].playAnimation();
+                explosions[i].setSpeed(25);
+                explosions[i].setAngle(180);
+                currentExplosion++;
+
+            }
+
+        }
+    };
+    return tAstroid;
+}
+
+
+
+function deployAstroids() {
+    astroidElapsedTime = astroidTimer.getElapsedTime();
+    if(astroidElapsedTime > astroidDelay) {
+        currentAstroid++;
+        if(currentAstroid >= 300) {
+            currentAstroid = 0;
+        }
+        astroids[currentAstroid].fire();
+        astroidTimer.reset();
+    }
+}
+
+
+function createAstroids() {
+    astroids = new Array(300);
+    for(var i = 0; i <= 300; i++) {
+        astroids[i] = new Astroid();
+    }
+}
+
+function updateAstroids() {
+    for(var i = 0; i < astroids.length; i++) {
+        astroids[i].checkCollision();
+        astroids[i].update();
+    }
+}
+
+// Explosion
+
+function Explosion() {
+    tExplosion = new Sprite(scene, "resources/Explosion_2.png", 1152, 96);
+    tExplosion.setBoundAction(CONTINUE);
+    tExplosion.loadAnimation(1152, 96, 96, 96);
+    tExplosion.generateAnimationCycles();
+    tExplosion.setAnimationSpeed(1000);
+    //tExplosion.setPosition(400,300);
+    tExplosion.setPosition(-15,-15);
+    tExplosion.pauseAnimation();
+
+    return tExplosion;
+}
+
+function CreateExplosions() {
+    explosions = new Array(300);
+    for(var i = 0; i < explosions.length; i++) {
+        explosions[i] = new Explosion();
+    }
+}
+
+function updateExplosions() {
+    for(var i = 0; i < explosions.length; i++) {
+        explosions[i].update();
+    }
+}
