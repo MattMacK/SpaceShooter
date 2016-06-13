@@ -24,6 +24,7 @@
         var lazerWav;
         var explosionWav;
         var points = 0;
+        var currentLives = 3;
 
 
         function init(){
@@ -54,6 +55,7 @@
             updateStars();
             updateLazers();
             updateAstroids();
+            ship.checkCollision();
             updateExplosions();
 
 
@@ -62,7 +64,9 @@
     </script>
 </head>
 <body onload = "init()">
-<div id="scoreBoard">Points: 0</div>
-
+<div id="scoreBoard">Points: 0 <span id="lives">Lives: 3</span></div>
+<div id="reset">
+<button type="button" onclick="restart()">Play Again</button>
+</div>
 </body>
 </html>

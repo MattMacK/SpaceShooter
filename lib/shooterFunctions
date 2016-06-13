@@ -10,6 +10,27 @@ function Ship() {
     tShip.vSpeed = 0;
     tShip.setBoundAction(STOP);
 
+    tShip.checkCollision = function () {
+        for(var i = 0; i < astroids.length; i++) {
+            if(this.collidesWith(astroids[i])){
+                currentExplosion++;
+                explosions[currentExplosion].setPosition(this.x, this.y);
+                explosions[currentExplosion].setCurrentCycle("one");
+                explosions[currentExplosion].setSpeed(5);
+                explosions[currentExplosion].setAngle(180);
+                explosionWav.play();
+                explosions[currentExplosion].playAnimation();
+                currentLives -= 1;
+                updateScore();
+                astroids[i].hide();
+                if(currentLives <= 0){
+                    this.hide();
+                }
+
+            }
+        }
+    };
+
 
     tShip.checkKeys = function() {
         elapsedTime = timer.getElapsedTime();
@@ -239,5 +260,9 @@ function updateStars() {
 }
 
 function updateScore() {
-    scoreBoard.innerHTML = "Score: " + points;
+    scoreBoard.innerHTML = "Score: " + points + "   Lives: " + currentLives;
+}
+
+function restart() {
+    document.location.href = "";
 }
