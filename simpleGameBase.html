@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Space Shooter</title>
+    <link rel="stylesheet" href="lib/style.css">
     <script type="text/javascript"
             src = "lib/simpleGame.js"></script>
     <script type="text/javascript" src="lib/shooterFunctions"></script>
@@ -25,6 +26,7 @@
         var explosionWav;
         var points = 0;
         var currentLives = 3;
+        var isDead = false;
 
 
         function init(){
@@ -64,7 +66,7 @@
     </script>
 </head>
 <body onload = "init()">
-<div id="scoreBoard">Points: 0 <span id="lives">Lives: 3</span></div>
+<div id="scoreBoard">Score: 0 Lives: 3</div>
 <div id="reset">
 <button type="button" onclick="restart()">Play Again</button>
 </div>

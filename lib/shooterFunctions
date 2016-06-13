@@ -24,6 +24,7 @@ function Ship() {
                 updateScore();
                 astroids[i].hide();
                 if(currentLives <= 0){
+                    isDead = true;
                     this.hide();
                 }
 
@@ -36,30 +37,32 @@ function Ship() {
         elapsedTime = timer.getElapsedTime();
         this.hSpeed = 0;
         this.vSpeed = 0;
-        if (keysDown[K_LEFT]) {
-            this.hSpeed = -20;
-            this.vSpeed = 0;
-        }
-        if(keysDown[K_RIGHT]) {
-            this.hSpeed = 20;
-            this.vSpeed = 0;
-        }
-        if(keysDown[K_DOWN]) {
-            this.hSpeed = 0;
-            this.vSpeed = 20;
-        }
-        if(keysDown[K_UP]){
-            this.hSpeed = 0;
-            this.vSpeed = -20;
-        }
-        if(keysDown[K_SPACE]) {
-            if(elapsedTime > delay) {
-                currentLazer++;
-                if(currentLazer >= NUM_LAZERS) {
-                    currentLazer = 0;
+        if(!isDead) {
+            if (keysDown[K_LEFT]) {
+                this.hSpeed = -20;
+                this.vSpeed = 0;
+            }
+            if (keysDown[K_RIGHT]) {
+                this.hSpeed = 20;
+                this.vSpeed = 0;
+            }
+            if (keysDown[K_DOWN]) {
+                this.hSpeed = 0;
+                this.vSpeed = 20;
+            }
+            if (keysDown[K_UP]) {
+                this.hSpeed = 0;
+                this.vSpeed = -20;
+            }
+            if (keysDown[K_SPACE]) {
+                if (elapsedTime > delay) {
+                    currentLazer++;
+                    if (currentLazer >= NUM_LAZERS) {
+                        currentLazer = 0;
+                    }
+                    lazers[currentLazer].fire();
+                    timer.reset();
                 }
-                lazers[currentLazer].fire();
-                timer.reset();
             }
         }
 
@@ -265,4 +268,5 @@ function updateScore() {
 
 function restart() {
     document.location.href = "";
+    isDead = false;
 }
