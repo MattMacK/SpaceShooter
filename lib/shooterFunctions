@@ -74,6 +74,7 @@ function Lazer() {
         //this.changeYby(this.vSpeed);
         this.setMoveAngle(0);
         this.setSpeed(40);
+        lazerWav.play();
     };
     return tLazer;
 }
@@ -122,6 +123,7 @@ function Astroid() {
                 explosions[i].playAnimation();
                 explosions[i].setSpeed(25);
                 explosions[i].setAngle(180);
+                explosionWav.play();
                 currentExplosion++;
 
             }
@@ -167,7 +169,7 @@ function Explosion() {
     tExplosion.setBoundAction(CONTINUE);
     tExplosion.loadAnimation(1152, 96, 96, 96);
     tExplosion.generateAnimationCycles();
-    tExplosion.setAnimationSpeed(1000);
+    tExplosion.setAnimationSpeed(1300);
     //tExplosion.setPosition(400,300);
     tExplosion.setPosition(-15,-15);
     tExplosion.pauseAnimation();
@@ -185,5 +187,52 @@ function CreateExplosions() {
 function updateExplosions() {
     for(var i = 0; i < explosions.length; i++) {
         explosions[i].update();
+    }
+}
+
+// Stars
+var starElapsedTime = 0;
+var starTimer = new Timer();
+var starDelay = .01;
+var currentStar = 0;
+
+function Star() {
+    tStar = new Sprite(scene, "resources/star_7.png", 5, 5);
+    tStar.setBoundAction(DIE);
+    tStar.hide();
+
+
+    tStar.fire = function () {
+        this.show();
+        this.setPosition((Math.random() * 800), -20);
+        this.setSpeed(35);
+        this.setMoveAngle(180);
+    };
+    return tStar
+}
+
+function deployStars() {
+    starElapsedTime = starTimer.getElapsedTime();
+    if(starElapsedTime > starDelay) {
+        currentStar++;
+        if(currentStar >= 300) {
+            currentStar = 0;
+        }
+        stars[currentStar].fire();
+        starTimer.reset();
+    }
+}
+
+
+function createStars() {
+    stars = new Array(300);
+    for(var i = 0; i <= 300; i++) {
+        stars[i] = new Star();
+    }
+}
+
+function updateStars() {
+    for(var i = 0; i < stars.length; i++) {
+        stars[i].update();
     }
 }

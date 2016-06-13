@@ -20,29 +20,42 @@
         var currentAstroid = 0;
         var explosion;
         var currentExplosion = 0;
+        var spaceMP3;
+        var lazerWav;
+        var explosionWav;
 
 
         function init(){
             scene = new Scene();
             scene.setBG("black");
             CreateExplosions();
+            createStars();
             makeLazers();
             createAstroids();
             timer = new Timer();
             astroidTimer = new Timer();
             ship = new Ship();
+            lazerWav = new Sound("resources/LazerShooting.wav");
+            explosionWav = new Sound("resources/explosion_1.wav");
+            spaceMP3 = new Sound("resources/spaceNoise_2.wav");
+            spaceMP3.play();
 
             scene.start();
         } // end init
 
         function update(){
             scene.clear();
+            spaceMP3.play();
             deployAstroids();
+            deployStars();
             ship.checkKeys();
             ship.update();
+            updateStars();
             updateLazers();
             updateAstroids();
             updateExplosions();
+
+
 
         }
     </script>
