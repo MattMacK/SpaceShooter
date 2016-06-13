@@ -125,7 +125,8 @@ function Astroid() {
                 explosions[i].setAngle(180);
                 explosionWav.play();
                 currentExplosion++;
-
+                points += 100;
+                updateScore();
             }
 
         }
@@ -235,4 +236,8 @@ function updateStars() {
     for(var i = 0; i < stars.length; i++) {
         stars[i].update();
     }
+}
+
+function updateScore() {
+    scoreBoard.innerHTML = "Score: " + points;
 }
