@@ -25,6 +25,7 @@
         var lazerWav;
         var explosionWav;
         var points = 0;
+        var pointCounter = 0;
         var currentLives = 3;
         var isDead = false;
 
@@ -41,15 +42,13 @@
             ship = new Ship();
             lazerWav = new Sound("resources/LazerShooting.wav");
             explosionWav = new Sound("resources/explosion_1.wav");
-            spaceMP3 = new Sound("resources/spaceNoise_2.wav");
-            spaceMP3.play();
+            document.getElementById("audio").volume = .2;
 
             scene.start();
         } // end init
 
         function update(){
             scene.clear();
-            spaceMP3.play();
             deployAstroids();
             deployStars();
             ship.checkKeys();
@@ -70,5 +69,6 @@
 <div id="reset">
 <button type="button" onclick="restart()">Play Again</button>
 </div>
+<audio id="audio" src="resources/music.ogg" autoplay loop></audio>
 </body>
 </html>

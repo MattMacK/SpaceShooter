@@ -3,7 +3,7 @@
 //Ship functions
 
 function Ship() {
-    tShip = new Sprite(scene, "resources/ship_6.png", 90, 90);
+    tShip = new Sprite(scene, "resources/ship_6.png", 50, 50);
     tShip.setPosition(400, 550);
     tShip.setSpeed(0);
     tShip.hSpeed = 0;
@@ -13,6 +13,7 @@ function Ship() {
     tShip.checkCollision = function () {
         for(var i = 0; i < astroids.length; i++) {
             if(this.collidesWith(astroids[i])){
+                astroids[i].hide();
                 currentExplosion++;
                 explosions[currentExplosion].setPosition(this.x, this.y);
                 explosions[currentExplosion].setCurrentCycle("one");
@@ -22,7 +23,6 @@ function Ship() {
                 explosions[currentExplosion].playAnimation();
                 currentLives -= 1;
                 updateScore();
-                astroids[i].hide();
                 if(currentLives <= 0){
                     isDead = true;
                     this.hide();
@@ -150,6 +150,7 @@ function Astroid() {
                 explosionWav.play();
                 currentExplosion++;
                 points += 100;
+                pointCounter += 10;
                 updateScore();
             }
 
@@ -162,6 +163,11 @@ function Astroid() {
 
 function deployAstroids() {
     astroidElapsedTime = astroidTimer.getElapsedTime();
+    //increase difficulty based on score
+    if(pointCounter >= 15 && astroidDelay > 0){
+        astroidDelay -= .01;
+        pointCounter = 0;
+    }
     if(astroidElapsedTime > astroidDelay) {
         currentAstroid++;
         if(currentAstroid >= 300) {
